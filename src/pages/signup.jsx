@@ -11,6 +11,7 @@ import {
 } from "@mantine/core";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { nameRegex, emailRegex } from "../utils/regex";
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -77,7 +78,26 @@ export default function SignUp() {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            console.log(userData);
+            if (
+              !userData.email ||
+              !userData.name ||
+              !userData.cPassword ||
+              !userData.password ||
+              !userData.email.match(
+                emailRegex || !userData.name.match(nameRegex)
+              ) ||
+              !userData.password.length > 6 ||
+              userData.password !== userData.cPassword
+            ) {
+              console.log("Error");
+            } else {
+              const data = {
+                name: userData.name,
+                email: userData.email,
+                password: userData.password,
+              };
+              console.log(data);
+            }
           }}
         >
           <TextInput

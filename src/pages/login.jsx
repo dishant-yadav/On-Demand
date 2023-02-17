@@ -14,6 +14,7 @@ import {
 } from "@mantine/core";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { emailRegex } from "../utils/regex";
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -85,7 +86,19 @@ export default function Login() {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            console.log(userData);
+            if (
+              !userData.email ||
+              !userData.password ||
+              !userData.email.match(emailRegex)
+            ) {
+              console.log("Error");
+            } else {
+              const data = {
+                email: userData.email,
+                password: userData.password,
+              };
+              console.log(data);
+            }
           }}
         >
           <TextInput
