@@ -15,6 +15,9 @@ import {
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { emailRegex } from "../utils/regex";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../config/firebase";
+import { useNavigate } from "react-router-dom";
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -57,6 +60,8 @@ export default function Login() {
     email: "",
     password: "",
   });
+  const navigate = useNavigate();
+
   return (
     <div className={classes.wrapper}>
       <Paper className={classes.form} radius={0} p={25}>
@@ -97,7 +102,19 @@ export default function Login() {
                 email: userData.email,
                 password: userData.password,
               };
-              console.log(data);
+              signInWithEmailAndPassword(auth, data.email, data.password)
+                .then((userCredential) => {
+                  const user = userCredential.user;
+                  console.log("SignIn Successful");
+                  navigate("/home");
+                })
+                .catch((error) => {
+                  const errorCode = error.code;
+                  const errorMessage = error.message;
+                  console.log("Failure");
+                  console.log(errorCode);
+                  console.log(errorMessage);
+                });
             }
           }}
         >

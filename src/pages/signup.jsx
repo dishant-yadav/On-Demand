@@ -12,6 +12,13 @@ import {
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { nameRegex, emailRegex } from "../utils/regex";
+import {
+  createUserWithEmailAndPassword,
+  updateCurrentUser,
+  updateProfile,
+} from "firebase/auth";
+import { auth } from "../config/firebase";
+import { useNavigate } from "react-router-dom";
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -56,6 +63,8 @@ export default function SignUp() {
     password: "",
     cPassword: "",
   });
+    const navigate = useNavigate();
+
   return (
     <div className={classes.wrapper}>
       <Paper className={classes.form} radius={0} p={25}>
@@ -96,7 +105,26 @@ export default function SignUp() {
                 email: userData.email,
                 password: userData.password,
               };
-              console.log(data);
+              createUserWithEmailAndPassword(auth, data.email, data.password)
+                .then((userCredential) => {
+                  const user = userCredential.user;
+                  console.log("Account Created");
+                  return user;
+                })
+                .then((user) => {
+                  updateProfile(user, {
+                    displayName: data.name,
+                  });
+                  console.log("Name Updated");
+                  navigate("/signup")
+                })
+                .catch((error) => {
+                  const errorCode = error.code;
+                  const errorMessage = error.message;
+                  console.log("Failure");
+                  console.log(errorCode);
+                  console.log(errorMessage);
+                });
             }
           }}
         >
