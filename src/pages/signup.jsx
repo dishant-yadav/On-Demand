@@ -12,11 +12,7 @@ import {
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { nameRegex, emailRegex } from "../utils/regex";
-import {
-  createUserWithEmailAndPassword,
-  updateCurrentUser,
-  updateProfile,
-} from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../config/firebase";
 import { useNavigate } from "react-router-dom";
 
@@ -63,7 +59,7 @@ export default function SignUp() {
     password: "",
     cPassword: "",
   });
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   return (
     <div className={classes.wrapper}>
@@ -116,7 +112,7 @@ export default function SignUp() {
                     displayName: data.name,
                   });
                   console.log("Name Updated");
-                  navigate("/signup")
+                  navigate("/login");
                 })
                 .catch((error) => {
                   const errorCode = error.code;

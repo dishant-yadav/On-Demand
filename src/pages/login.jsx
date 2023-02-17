@@ -149,7 +149,7 @@ export default function Login() {
             Login
           </Button>
           <Text align="center" mt="lg">
-            Don't have an account?<Link to={"/signup"}>Signup</Link>
+            Don't have an account? <Link to={"/signup"}>Signup</Link>
           </Text>
         </form>
       </Paper>

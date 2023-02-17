@@ -5,20 +5,18 @@ import {
   Button,
   Overlay,
   createStyles,
+  BackgroundImage,
+  Box,
 } from "@mantine/core";
 import { Link } from "react-router-dom";
+import Navbar from "../components/navbar";
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
-    minHeight: "100vh",
     position: "relative",
     paddingTop: 220,
     paddingBottom: 130,
-    backgroundImage:
-      "url(https://images.unsplash.com/photo-1573164713988-8665fc963095?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=980&q=80)",
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-
+    minHeight: "92vh",
     "@media (max-width: 520px)": {
       paddingTop: 80,
       paddingBottom: 50,
@@ -103,37 +101,42 @@ export default function Hero() {
   const { classes, cx } = useStyles();
 
   return (
-    <div className={classes.wrapper}>
-      <Overlay color="#000" opacity={0.65} zIndex={1} />
+    <Box>
+      <BackgroundImage src="https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=720&q=80">
+        <Navbar />
+        <div className={classes.wrapper}>
+          <Title className={classes.title}>
+            Get your demand{" "}
+            <Text component="span" inherit className={classes.highlight}>
+              fulfilled
+            </Text>
+          </Title>
 
-      <div className={classes.inner}>
-        <Title className={classes.title}>
-          Get your demand{" "}
-          <Text component="span" inherit className={classes.highlight}>
-            fulfilled
-          </Text>
-        </Title>
+          <Container size={640}>
+            <Text size="lg" className={classes.description}>
+              Build more reliable software with AI companion. AI is also trained
+              to detect lazy developers who do nothing and just complain on
+              Twitter.
+            </Text>
+          </Container>
 
-        <Container size={640}>
-          <Text size="lg" className={classes.description}>
-            Build more reliable software with AI companion. AI is also trained
-            to detect lazy developers who do nothing and just complain on
-            Twitter.
-          </Text>
-        </Container>
-
-        <div className={classes.controls}>
-          <Button
-            className={cx(classes.control, classes.secondaryControl)}
-            size="lg"
-          >
-            <Link to={"/signup"}>SignUp</Link>
-          </Button>
-          <Button className={classes.control} variant="white" size="lg">
-            <Link to={"/login"}>Login</Link>
-          </Button>
+          <div className={classes.controls}>
+            <Button
+              className={cx(classes.control, classes.secondaryControl)}
+              size="lg"
+            >
+              <Link to={"/signup"} style={{ textDecoration: "none" }}>
+                SignUp
+              </Link>
+            </Button>
+            <Button className={classes.control} variant="white" size="lg">
+              <Link to={"/login"} style={{ textDecoration: "none" }}>
+                Login
+              </Link>
+            </Button>
+          </div>
         </div>
-      </div>
-    </div>
+      </BackgroundImage>
+    </Box>
   );
 }
