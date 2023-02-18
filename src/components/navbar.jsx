@@ -7,6 +7,7 @@ import {
   Burger,
   Text,
   Button,
+  Box,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { Link, useNavigate } from "react-router-dom";
@@ -17,6 +18,8 @@ const useStyles = createStyles((theme) => ({
     justifyContent: "space-between",
     alignItems: "center",
     height: "100%",
+    paddingInline: 50,
+    paddingBlock: 10,
   },
 
   links: {
@@ -70,15 +73,16 @@ export default function Navbar() {
   const navigation = useNavigate();
 
   return (
-    <Header height={60}>
-      <Container className={classes.header}>
+    <Header height={70} bg={"lightgrey"}>
+      <Box className={classes.header}>
         <Text
           variant="gradient"
           gradient={{ from: "indigo", to: "cyan", deg: 45 }}
-          sx={{ fontFamily: "Greycliff CF, sans-serif" }}
+          sx={{ fontFamily: "Ubuntu, sans-serif" }}
           ta="center"
           fz="40px"
           fw={700}
+          underline
         >
           OnDemand
         </Text>
@@ -104,7 +108,7 @@ export default function Navbar() {
           className={classes.burger}
           size="sm"
         />
-      </Container>
+      </Box>
     </Header>
   );
 }

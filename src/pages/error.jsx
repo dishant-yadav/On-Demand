@@ -1,4 +1,4 @@
-import { useRouteError } from "react-router-dom";
+import { Link, useRouteError } from "react-router-dom";
 import {
   createStyles,
   Title,
@@ -71,7 +71,7 @@ export default function ServerError() {
         </Text>
         <Text></Text>
         <Group position="center">
-          <Anchor href="/"> Return to Home</Anchor>
+          <Link to="/"> Return to Home</Link>
         </Group>
       </Container>
     </div>

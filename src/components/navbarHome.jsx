@@ -19,6 +19,7 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import { IconPlus, IconSearch, IconUpload } from "@tabler/icons-react";
 import { hasLength, isNotEmpty, useForm } from "@mantine/form";
+import { getDatabase, ref, set } from "firebase/database";
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -81,11 +82,30 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export default function NavbarHome() {
+  const db = getDatabase();
+  const writeUserData = (itemName, itemDesc, itemPrice) => {
+    const itemID = Math.random().toString().slice(2);
+    set(ref(db, "items/" + itemID), {
+      itemName,
+      itemDesc,
+      itemPrice,
+    });
+  };
+
+  const rating = 1;
+  const review = "Good Product";
+
+  const writeUserData1 = (itemName, itemDesc, itemPrice) => {
+    const itemID = Math.random().toString().slice(2);
+    set(ref(db, "ratings/" + 454 + "/2"), {
+      rating,
+      review,
+    });
+  };
   const [openedMenu, { toggle }] = useDisclosure(false);
   const [opened, { close, open }] = useDisclosure(false);
   const theme = useMantineTheme();
   const { classes, cx } = useStyles();
-  // const [image, setImages] = useState(null);
   const form = useForm({
     initialValues: {
       itemName: "",
@@ -127,9 +147,17 @@ export default function NavbarHome() {
       >
         <form
           onSubmit={form.onSubmit(() => {
-            console.log(form.values.itemName);
-            console.log(form.values.ItemDesc);
-            console.log(form.values.itemImage[0].name);
+            // console.log(form.values.itemName);
+            // console.log(form.values.ItemDesc);
+            // console.log(form.values.itemImage[0].name);
+            writeUserData(
+              form.values.itemName,
+              form.values.ItemDesc,
+              form.values.itemPriceExp
+            );
+            writeUserData1();
+            close();
+            form.reset();
           })}
         >
           <TextInput

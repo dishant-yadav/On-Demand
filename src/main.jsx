@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App";
-import ErrorPage from "./error-page";
+import ErrorPage from "./pages/error";
 import Login from "./pages/login";
 import SignUp from "./pages/signup";
 import Home from "./pages/home";

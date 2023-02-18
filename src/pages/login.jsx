@@ -145,13 +145,18 @@ export default function Login() {
               });
             }}
           />
-          <Button  mt="xl" size="md" type="submit" sx={{float:"right", clear:"both"}}>
+          <Button
+            mt="xl"
+            size="md"
+            type="submit"
+            sx={{ float: "right", clear: "both" }}
+          >
             Login
           </Button>
-          </form>
-          <Text align="center" mt={90}>
-            Don't have an account? <Link to={"/signup"}>Signup</Link>
-          </Text>
+        </form>
+        <Text align="center" mt={90}>
+          Don't have an account? <Link to={"/signup"}>Signup</Link>
+        </Text>
       </Paper>
     </div>
   );
