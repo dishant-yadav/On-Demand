@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   createStyles,
   Header,
@@ -20,6 +20,9 @@ import { useDisclosure } from "@mantine/hooks";
 import { IconPlus, IconSearch, IconUpload } from "@tabler/icons-react";
 import { hasLength, isNotEmpty, useForm } from "@mantine/form";
 import { getDatabase, ref, set } from "firebase/database";
+import { AuthProvider } from "./../config/authContext";
+import { getAuth } from "firebase/auth";
+import { async } from "@firebase/util";
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -83,25 +86,40 @@ const useStyles = createStyles((theme) => ({
 
 export default function NavbarHome() {
   const db = getDatabase();
-  const writeUserData = (itemName, itemDesc, itemPrice) => {
+  const getUser = async () => {
+    const auth = await getAuth();
+    const currentUser = auth?.currentUser;
+
+    return currentUser;
+  };
+
+  const writeUserData = async (itemName, itemDesc, itemPrice) => {
+    const { uid, name, email } = await getUser();
+    console.log(uid);
+    console.log(name);
+    console.log(email);
+    const todayDate = new Date();
     const itemID = Math.random().toString().slice(2);
     set(ref(db, "items/" + itemID), {
+      id: itemID,
       itemName,
       itemDesc,
       itemPrice,
+      rating: [],
+      metaData: {
+        createdAt: {
+          date: todayDate.toDateString(),
+          time: todayDate.toTimeString(),
+        },
+        demanderDetails: {
+          demanderID: uid,
+          demanderName: name || "name",
+          demanderEmail: email,
+        },
+      },
     });
   };
 
-  const rating = 1;
-  const review = "Good Product";
-
-  const writeUserData1 = (itemName, itemDesc, itemPrice) => {
-    const itemID = Math.random().toString().slice(2);
-    set(ref(db, "ratings/" + 454 + "/2"), {
-      rating,
-      review,
-    });
-  };
   const [openedMenu, { toggle }] = useDisclosure(false);
   const [opened, { close, open }] = useDisclosure(false);
   const theme = useMantineTheme();
@@ -130,124 +148,125 @@ export default function NavbarHome() {
   });
 
   return (
-    <Header height={60} mb={10}>
-      <Modal
-        centered
-        opened={opened}
-        onClose={close}
-        size="md"
-        title="Add your Demand"
-        overlayColor={
-          theme.colorScheme === "dark"
-            ? theme.colors.dark[9]
-            : theme.colors.gray[2]
-        }
-        overlayOpacity={0.55}
-        overlayBlur={6}
-      >
-        <form
-          onSubmit={form.onSubmit(() => {
-            // console.log(form.values.itemName);
-            // console.log(form.values.ItemDesc);
-            // console.log(form.values.itemImage[0].name);
-            writeUserData(
-              form.values.itemName,
-              form.values.ItemDesc,
-              form.values.itemPriceExp
-            );
-            writeUserData1();
-            close();
-            form.reset();
-          })}
+    <AuthProvider>
+      <Header height={60} mb={10}>
+        <Modal
+          centered
+          opened={opened}
+          onClose={close}
+          size="md"
+          title="Add your Demand"
+          overlayColor={
+            theme.colorScheme === "dark"
+              ? theme.colors.dark[9]
+              : theme.colors.gray[2]
+          }
+          overlayOpacity={0.55}
+          overlayBlur={6}
         >
-          <TextInput
-            label="Name"
-            description="What name you would like the item to be known as?"
-            placeholder="Medicine"
-            withAsterisk
-            {...form.getInputProps("itemName")}
-          />
-          <TextInput
-            mt="md"
-            label="Description"
-            description="How would you like to describe the item?"
-            placeholder="Color : Red || Length: 90cm"
-            withAsterisk
-            {...form.getInputProps("ItemDesc")}
-          />
-          <FileInput
-            mt={"md"}
-            multiple
-            label="Item Images (PNG/JPEG)"
-            description="Some images of the item?"
-            placeholder="Items Image"
-            icon={<IconUpload size={14} />}
-            {...form.getInputProps("itemImage")}
-            accept="image/png,image/jpeg"
-          />
-          <NumberInput
-            mt="md"
-            label="Excepted Price (in ₹)"
-            description="What should be the starting price?"
-            placeholder="1000"
-            withAsterisk
-            {...form.getInputProps("itemPriceExp")}
-            hideControls={true}
-          />
-          <Button
-            variant="filled"
-            type="submit"
-            mt={"md"}
-            sx={{ float: "right" }}
+          <form
+            onSubmit={form.onSubmit(() => {
+              // console.log(form.values.itemName);
+              // console.log(form.values.ItemDesc);
+              // console.log(form.values.itemImage[0].name);
+              writeUserData(
+                form.values.itemName,
+                form.values.ItemDesc,
+                form.values.itemPriceExp
+              );
+              close();
+              form.reset();
+            })}
           >
-            Submit
-          </Button>
-        </form>
-      </Modal>
-      <Container className={classes.header}>
-        <Text
-          variant="gradient"
-          gradient={{ from: "indigo", to: "cyan", deg: 45 }}
-          sx={{ fontFamily: "Greycliff CF, sans-serif" }}
-          ta="center"
-          fz="xl"
-          fw={700}
-        >
-          OnDemand
-        </Text>
-        <Autocomplete
-          className={classes.search}
-          placeholder="Search Items"
-          icon={<IconSearch color="grey" size={15} />}
-          data={[
-            "React",
-            "Angular",
-            "Vue",
-            "Next.js",
-            "Riot.js",
-            "Svelte",
-            "Blitz.js",
-          ]}
-        />
-        <Group>
-          <Avatar color="blue" radius="xl" sx={{ cursor: "pointer" }}>
-            User
-          </Avatar>
-          <ActionIcon
-            variant="filled"
-            sx={{ cursor: "pointer" }}
-            onClick={open}
+            <TextInput
+              label="Name"
+              description="What name you would like the item to be known as?"
+              placeholder="Medicine"
+              withAsterisk
+              {...form.getInputProps("itemName")}
+            />
+            <TextInput
+              mt="md"
+              label="Description"
+              description="How would you like to describe the item?"
+              placeholder="Color : Red || Length: 90cm"
+              withAsterisk
+              {...form.getInputProps("ItemDesc")}
+            />
+            <FileInput
+              mt={"md"}
+              multiple
+              label="Item Images (PNG/JPEG)"
+              description="Some images of the item?"
+              placeholder="Items Image"
+              icon={<IconUpload size={14} />}
+              {...form.getInputProps("itemImage")}
+              accept="image/png,image/jpeg"
+            />
+            <NumberInput
+              mt="md"
+              label="Excepted Price (in ₹)"
+              description="What should be the starting price?"
+              placeholder="1000"
+              withAsterisk
+              {...form.getInputProps("itemPriceExp")}
+              hideControls={true}
+            />
+            <Button
+              variant="filled"
+              type="submit"
+              mt={"md"}
+              sx={{ float: "right" }}
+            >
+              Submit
+            </Button>
+          </form>
+        </Modal>
+        <Container className={classes.header}>
+          <Text
+            variant="gradient"
+            gradient={{ from: "indigo", to: "cyan", deg: 45 }}
+            sx={{ fontFamily: "Greycliff CF, sans-serif" }}
+            ta="center"
+            fz="xl"
+            fw={700}
           >
-            <IconPlus size={16} />
-          </ActionIcon>
-        </Group>
-        <Burger
-          opened={openedMenu}
-          onClick={toggle}
-          className={classes.burger}
-          size="sm"
-        />
-      </Container>
-    </Header>
+            OnDemand
+          </Text>
+          <Autocomplete
+            className={classes.search}
+            placeholder="Search Items"
+            icon={<IconSearch color="grey" size={15} />}
+            data={[
+              "React",
+              "Angular",
+              "Vue",
+              "Next.js",
+              "Riot.js",
+              "Svelte",
+              "Blitz.js",
+            ]}
+          />
+          <Group>
+            <Avatar color="blue" radius="xl" sx={{ cursor: "pointer" }}>
+              User
+            </Avatar>
+            <ActionIcon
+              variant="filled"
+              sx={{ cursor: "pointer" }}
+              onClick={open}
+            >
+              <IconPlus size={16} />
+            </ActionIcon>
+          </Group>
+          <Burger
+            opened={openedMenu}
+            onClick={toggle}
+            className={classes.burger}
+            size="sm"
+          />
+        </Container>
+      </Header>
+    </AuthProvider>
   );
 }
