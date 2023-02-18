@@ -21,8 +21,6 @@ import { IconPlus, IconSearch, IconUpload } from "@tabler/icons-react";
 import { hasLength, isNotEmpty, useForm } from "@mantine/form";
 import { getDatabase, ref, set } from "firebase/database";
 import { AuthProvider } from "./../config/authContext";
-import { getAuth } from "firebase/auth";
-import { async } from "@firebase/util";
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -84,20 +82,10 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export default function NavbarHome() {
+export default function NavbarHome({ userDetails }) {
   const db = getDatabase();
-  const getUser = async () => {
-    const auth = await getAuth();
-    const currentUser = auth?.currentUser;
 
-    return currentUser;
-  };
-
-  const writeUserData = async (itemName, itemDesc, itemPrice) => {
-    const { uid, name, email } = await getUser();
-    console.log(uid);
-    console.log(name);
-    console.log(email);
+  const postItems = async (itemName, itemDesc, itemPrice) => {
     const todayDate = new Date();
     const itemID = Math.random().toString().slice(2);
     set(ref(db, "items/" + itemID), {
@@ -112,9 +100,10 @@ export default function NavbarHome() {
           time: todayDate.toTimeString(),
         },
         demanderDetails: {
-          demanderID: uid,
-          demanderName: name || "name",
-          demanderEmail: email,
+          demanderID: userDetails.id,
+          demanderName: userDetails.name,
+          demanderEmail: userDetails.email,
+          demanderPhoto: userDetails.photoURI || "ImageLink",
         },
       },
     });
@@ -166,10 +155,7 @@ export default function NavbarHome() {
         >
           <form
             onSubmit={form.onSubmit(() => {
-              // console.log(form.values.itemName);
-              // console.log(form.values.ItemDesc);
-              // console.log(form.values.itemImage[0].name);
-              writeUserData(
+              postItems(
                 form.values.itemName,
                 form.values.ItemDesc,
                 form.values.itemPriceExp
@@ -249,7 +235,7 @@ export default function NavbarHome() {
           />
           <Group>
             <Avatar color="blue" radius="xl" sx={{ cursor: "pointer" }}>
-              User
+              {userDetails.name.at(0) || "U"}
             </Avatar>
             <ActionIcon
               variant="filled"
