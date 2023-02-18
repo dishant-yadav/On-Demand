@@ -56,7 +56,7 @@ export default function ItemCard({ items }) {
 
   return (
     <Box py="xl">
-      <SimpleGrid cols={4} breakpoints={[{ maxWidth: "sm", cols: 2 }]}>
+      <SimpleGrid cols={4} breakpoints={[{ maxWidth: "sm", cols: 1 }]}>
         {cards}
       </SimpleGrid>
     </Box>

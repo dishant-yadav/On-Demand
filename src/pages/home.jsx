@@ -49,14 +49,13 @@ export default function Home() {
     });
   };
 
-  const getItemDetails = async () => {
+  const getItemDetails = () => {
     let data = [];
-    const itemsRef = await ref(db, "/items");
-    await onValue(itemsRef, (snapshot) => {
+    const itemsRef = ref(db, "/items");
+    onValue(itemsRef, (snapshot) => {
       data = snapshot.val();
+      setItems([...Object.values(items)]);
     });
-    console.log(data);
-    setItems(data);
   };
 
   useEffect(() => {
@@ -66,12 +65,6 @@ export default function Home() {
     }, 1000);
   }, []);
 
-  useEffect(() => {
-    setTimeout(() => {
-      getItemDetails();
-    }, 7000);
-  }, [userDetails]);
-
   return (
     <>
       <NavbarHome userDetails={userDetails} />
@@ -80,7 +73,6 @@ export default function Home() {
         sx={{
           fontFamily: "Ubuntu, sans-serif",
           paddingInline: 40,
-          paddingBlock: 10,
         }}
         ta="left"
         fz={30}
