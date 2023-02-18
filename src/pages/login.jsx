@@ -145,13 +145,13 @@ export default function Login() {
               });
             }}
           />
-          <Button fullWidth mt="xl" size="md" type="submit">
+          <Button  mt="xl" size="md" type="submit" sx={{float:"right", clear:"both"}}>
             Login
           </Button>
-          <Text align="center" mt="lg">
+          </form>
+          <Text align="center" mt={90}>
             Don't have an account? <Link to={"/signup"}>Signup</Link>
           </Text>
-        </form>
       </Paper>
     </div>
   );

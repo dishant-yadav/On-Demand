@@ -178,10 +178,15 @@ export default function SignUp() {
             }}
           />
 
-          <Button fullWidth mt="xl" size="md" type="submit">
+          <Button
+            mt="lg"
+            size="md"
+            type="submit"
+            sx={{ float: "right", clear: "both" }}
+          >
             SignUp
           </Button>
-          <Text align="center" mt="md">
+          <Text align="center" mt={70}>
             Already have an account? <Link to={"/login"}>Login</Link>
           </Text>
         </form>

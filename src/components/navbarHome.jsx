@@ -14,10 +14,11 @@ import {
   TextInput,
   Button,
   FileInput,
+  NumberInput,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconPlus, IconSearch, IconUpload } from "@tabler/icons-react";
-import { useForm } from "@mantine/form";
+import { hasLength, isNotEmpty, useForm } from "@mantine/form";
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -89,7 +90,22 @@ export default function NavbarHome() {
     initialValues: {
       itemName: "",
       ItemDesc: "",
-      itemImage: null,
+      itemImage: new File(["", ""], ""),
+      itemPriceExp: 0,
+    },
+    validate: {
+      itemName: hasLength(
+        { min: 2, max: 20 },
+        "Name must be 2-10 characters long"
+      ),
+      itemName: isNotEmpty("Name cannot be blank"),
+      ItemDesc: hasLength(
+        { min: 2, max: 60 },
+        "Description must be 2-60 characters long"
+      ),
+      ItemDesc: isNotEmpty("Description cannot be blank"),
+      itemPriceExp: (value) =>
+        value <= 0 ? "Item Price should be greater than 0" : null,
     },
   });
 
@@ -110,41 +126,51 @@ export default function NavbarHome() {
         overlayBlur={6}
       >
         <form
-          onSubmit={(e) => {
-            e.preventDefault();
+          onSubmit={form.onSubmit(() => {
             console.log(form.values.itemName);
             console.log(form.values.ItemDesc);
-            console.log(form.values.itemImage);
-            // console.log(image[0]);
-          }}
+            console.log(form.values.itemImage[0].name);
+          })}
         >
           <TextInput
-            label="Item Name"
+            label="Name"
+            description="What name you would like the item to be known as?"
             placeholder="Medicine"
+            withAsterisk
             {...form.getInputProps("itemName")}
           />
           <TextInput
             mt="md"
-            label="Item Description"
-            placeholder="Description of the item"
+            label="Description"
+            description="How would you like to describe the item?"
+            placeholder="Color : Red || Length: 90cm"
+            withAsterisk
             {...form.getInputProps("ItemDesc")}
           />
           <FileInput
             mt={"md"}
             multiple
-            label="Item Images"
+            label="Item Images (PNG/JPEG)"
+            description="Some images of the item?"
             placeholder="Items Image"
-            description="Only JPEG and PNG images"
             icon={<IconUpload size={14} />}
             {...form.getInputProps("itemImage")}
             accept="image/png,image/jpeg"
           />
-
+          <NumberInput
+            mt="md"
+            label="Excepted Price (in ₹)"
+            description="What should be the starting price?"
+            placeholder="1000"
+            withAsterisk
+            {...form.getInputProps("itemPriceExp")}
+            hideControls={true}
+          />
           <Button
             variant="filled"
             type="submit"
             mt={"md"}
-            sx={{ marginLeft: "320px" }}
+            sx={{ float: "right" }}
           >
             Submit
           </Button>
