@@ -6,6 +6,7 @@ import {
   Group,
   Burger,
   Text,
+  Button,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { Link, useNavigate } from "react-router-dom";
@@ -63,54 +64,38 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-const links = [
-  {
-    link: "/about",
-    label: "Features",
-  },
-  {
-    link: "/pricing",
-    label: "Pricing",
-  },
-  {
-    link: "/learn",
-    label: "Learn",
-  },
-  {
-    link: "/community",
-    label: "Community",
-  },
-];
-
 export default function Navbar() {
   const [opened, { toggle }] = useDisclosure(false);
-  const [active, setActive] = useState(links[0].link);
   const { classes, cx } = useStyles();
   const navigation = useNavigate();
-
-  const items = links.map((link) => (
-    <Link
-      key={link.label}
-      to={link.link}
-      className={cx(classes.link, {
-        [classes.linkActive]: active === link.link,
-      })}
-      onClick={(event) => {
-        event.preventDefault();
-        navigation(link.link);
-        setActive(link.link);
-      }}
-    >
-      {link.label}
-    </Link>
-  ));
 
   return (
     <Header height={60}>
       <Container className={classes.header}>
-        <Text>Logo</Text>
-        <Group spacing={5} className={classes.links}>
-          {items}
+        <Text
+          variant="gradient"
+          gradient={{ from: "indigo", to: "cyan", deg: 45 }}
+          sx={{ fontFamily: "Greycliff CF, sans-serif" }}
+          ta="center"
+          fz="40px"
+          fw={700}
+        >
+          OnDemand
+        </Text>
+        <Group className={classes.controls}>
+          <Link to={"/login"}>
+            <Button className={classes.control} variant="outline" size="md">
+              Login
+            </Button>
+          </Link>
+          <Link to={"/signup"} style={{ marginRight: 10 }}>
+            <Button
+              className={cx(classes.control, classes.secondaryControl)}
+              size="md"
+            >
+              SignUp
+            </Button>
+          </Link>
         </Group>
 
         <Burger

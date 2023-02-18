@@ -111,30 +111,6 @@ export default function Hero() {
               fulfilled
             </Text>
           </Title>
-
-          <Container size={640}>
-            <Text size="lg" className={classes.description}>
-              Build more reliable software with AI companion. AI is also trained
-              to detect lazy developers who do nothing and just complain on
-              Twitter.
-            </Text>
-          </Container>
-
-          <div className={classes.controls}>
-            <Button
-              className={cx(classes.control, classes.secondaryControl)}
-              size="lg"
-            >
-              <Link to={"/signup"} style={{ textDecoration: "none" }}>
-                SignUp
-              </Link>
-            </Button>
-            <Button className={classes.control} variant="white" size="lg">
-              <Link to={"/login"} style={{ textDecoration: "none" }}>
-                Login
-              </Link>
-            </Button>
-          </div>
         </div>
       </BackgroundImage>
     </Box>
