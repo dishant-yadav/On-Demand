@@ -131,7 +131,7 @@ export default function NavbarHome({ userDetails }) {
         { min: 2, max: 60 },
         "Description must be 2-60 characters long"
       ),
-      ItemDesc: isNotEmpty("Description cannot be blank"),
+      itemPrice: isNotEmpty("Description cannot be blank"),
       itemPriceExp: (value) =>
         value <= 0 ? "Item Price should be greater than 0" : null,
     },
