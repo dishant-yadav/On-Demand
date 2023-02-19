@@ -6,14 +6,22 @@ const db = getDatabase();
 export const getUser = async () => {
   const auth = await getAuth();
   const currentUser = auth?.currentUser;
-  return currentUser; 
+  return currentUser;
 };
 
-export const getItems = async () => {
-  let data = [];
-  const itemsRef = await ref(db, "/items");
-  await onValue(itemsRef, (snapshot) => {
-    data = snapshot.val();
+export const getItems = () => {
+  const itemsRef = ref(db, "/items");
+  const data = onValue(itemsRef, (snapshot) => {
+    return snapshot.val();
   });
-  return data;
+  return [Object.values(data)];
+};
+
+const getItemDetails = () => {
+  let data = [];
+  const itemsRef = ref(db, "/items");
+  onValue(itemsRef, (snapshot) => {
+    data = snapshot.val();
+    setItems([...Object.values(items)]);
+  });
 };

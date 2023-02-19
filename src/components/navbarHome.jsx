@@ -15,6 +15,7 @@ import {
   Button,
   FileInput,
   NumberInput,
+  Box,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconPlus, IconSearch, IconUpload } from "@tabler/icons-react";
@@ -208,7 +209,7 @@ export default function NavbarHome({ userDetails }) {
             </Button>
           </form>
         </Modal>
-        <Container className={classes.header}>
+        <Box className={classes.header}>
           <Text
             variant="gradient"
             gradient={{ from: "indigo", to: "cyan", deg: 45 }}
@@ -251,7 +252,7 @@ export default function NavbarHome({ userDetails }) {
             className={classes.burger}
             size="sm"
           />
-        </Container>
+        </Box>
       </Header>
     </AuthProvider>
   );

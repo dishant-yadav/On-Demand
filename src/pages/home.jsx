@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import NavbarHome from "../components/navbarHome.jsx";
-import { Button, Text } from "@mantine/core";
+import { Box, Button, Text } from "@mantine/core";
 import { getUser, getItems } from "./../utils/commonFunctions";
-import ItemCard from "../components/itemCard.jsx";
 import { getDatabase, ref, onValue } from "firebase/database";
-import { async } from "@firebase/util";
+import ItemGrid from "../components/itemsGrid.jsx";
 
 export default function Home() {
   const db = getDatabase();
@@ -49,24 +48,14 @@ export default function Home() {
     });
   };
 
-  const getItemDetails = () => {
-    let data = [];
-    const itemsRef = ref(db, "/items");
-    onValue(itemsRef, (snapshot) => {
-      data = snapshot.val();
-      setItems([...Object.values(items)]);
-    });
-  };
-
   useEffect(() => {
     setTimeout(() => {
       getUserDetails();
-      getItemDetails();
     }, 1000);
   }, []);
 
   return (
-    <>
+    <Box>
       <NavbarHome userDetails={userDetails} />
       <Text
         variant="text"
@@ -80,7 +69,7 @@ export default function Home() {
       >
         Welcome {userDetails.name || "User"} {"🖐"}
       </Text>
-      {items.length > 1 && <ItemCard items={items} />}
-    </>
+      <ItemGrid />
+    </Box>
   );
 }
