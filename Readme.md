@@ -3,24 +3,27 @@
 
 Get your demand fulfilled
 
+## [Deployed Link](https://main--dancing-boba-d4af98.netlify.app/)
 
 ## Authors
 
 - [@dishant-yadav](https://www.github.com/dishant-yadav)
 
-
 ## Tech Stack
 
 Frontend
- - React
- - Mantine UI
+
+- React
+- Mantine UI
 
 Backend
- - Firebase
 
-Hosting 
- - Netlify
- 
+- Firebase
+
+Hosting
+
+- Netlify
+
 ## Installation
 
 Follow the below commands to run the app on your local system
@@ -31,7 +34,7 @@ Follow the below commands to run the app on your local system
   npm install
   npm run dev
 ```
-    
+
 ## Tech Stack
 
 **Client:** React, Mantine
@@ -39,4 +42,3 @@ Follow the below commands to run the app on your local system
 **Server:** Firebase
 
 **Hosting** Netlify
-
